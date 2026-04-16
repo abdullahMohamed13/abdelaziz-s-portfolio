@@ -17,13 +17,13 @@ const NAV_LINKS = [
 const SOCIALS = [
   {
     name: 'Facebook',
-    href: 'https://www.facebook.com/share/17PBGe7bst/',
+    href: 'https://www.facebook.com/abdelaziz.omar23/',
     Icon: BsFacebook,
     action: 'link',
   },
   {
     name: 'LinkedIn',
-    href: 'https://www.linkedin.com/in/abdelaziz-omar-645250300?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
+    href: 'https://www.linkedin.com/in/abdelaziz-omarr/',
     Icon: BsLinkedin,
     action: 'link',
   },
