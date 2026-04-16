@@ -132,6 +132,8 @@ export default function PortfolioPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showMoreSkills, setShowMoreSkills] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
+  const [contactStatus, setContactStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [contactMessage, setContactMessage] = useState('');
 
   const handleCopy = (e: React.MouseEvent, name: string, value: string) => {
     e.preventDefault();
@@ -139,6 +141,51 @@ export default function PortfolioPage() {
       setCopied(name);
       setTimeout(() => setCopied(null), 2000);
     });
+  };
+
+  const handleContactSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const senderName = String(formData.get('name') ?? 'Portfolio Visitor').trim() || 'Portfolio Visitor';
+    const submittedAt = new Date();
+
+    formData.append('_subject', `New portfolio message from ${senderName}`);
+    formData.append('_template', 'table');
+    formData.append('_replyto', String(formData.get('email') ?? ''));
+    formData.append('_captcha', 'false');
+    formData.append('page_url', window.location.href);
+    formData.append('submitted_at', submittedAt.toLocaleString('en-US', {
+      dateStyle: 'full',
+      timeStyle: 'long',
+    }));
+    formData.append('submitted_at_utc', submittedAt.toISOString());
+    formData.append('source', 'Portfolio contact form');
+
+    setContactStatus('sending');
+    setContactMessage('Sending your message...');
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/abdelaziz.omar405@gmail.com', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send');
+      }
+
+      setContactStatus('success');
+      setContactMessage('Your message was sent successfully.');
+      form.reset();
+    } catch {
+      setContactStatus('error');
+      setContactMessage('Message sending failed. Please try again in a moment.');
+    }
   };
 
   return (
@@ -165,7 +212,7 @@ export default function PortfolioPage() {
           </div>
 
           <div className="hidden items-center gap-3 lg:flex">
-              <Button variant='link' href="" onClick={() => setMenuOpen(false)} download={true} children={(
+              <Button variant='link' href="/Abdelaziz_Omar_Resume.pdf" target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)} children={(
                 <div className='text-[1.1rem] flex items-center gap-2'>
                   <span>Resume</span>
                   <GrDownload className="h-4 w-4" />
@@ -197,7 +244,7 @@ export default function PortfolioPage() {
                 </a>
               ))}
 
-              <Button variant='link' href="" onClick={() => setMenuOpen(false)} download={true} children={(
+              <Button variant='link' href="/Abdelaziz_Omar_Resume.pdf" target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)} children={(
                 <div className='flex items-center gap-2 mt-1'>
                   <span>Resume</span>
                   <GrDownload className="h-4 w-4" />
@@ -443,7 +490,7 @@ export default function PortfolioPage() {
       >
         <div className="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-20">
           <form
-            onSubmit={(event) => event.preventDefault()}
+            onSubmit={handleContactSubmit}
             className="order-last md:order-first flex w-full flex-col gap-3 sm:gap-2"
           >
             {CONTACT_FIELDS.map((field) => (
@@ -465,8 +512,24 @@ export default function PortfolioPage() {
               className="h-32 sm:h-36.5 w-full resize-none rounded-lg border-2 border-black/60 px-4 sm:px-5 py-3 sm:py-4 text-base sm:text-[1.02rem] text-black outline-none transition-colors duration-200 placeholder:text-black/60 focus:border-black"
             />
 
+            <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" />
+
             <div className="flex flex-col w-full sm:justify-between sm:flex-row gap-4 pt-2 sm:pt-1">
-              <Button children='Get In Touch' className="mx-auto! md:px-9 md:mx-0! h-15 md:w-fit! text-[1rem]" />
+              <div className="flex flex-col gap-2">
+                <Button
+                  type="submit"
+                  disabled={contactStatus === 'sending'}
+                  children={contactStatus === 'sending' ? 'Sending...' : 'Get In Touch'}
+                  className="mx-auto! md:px-9 md:mx-0! h-15 md:w-fit! text-[1rem]"
+                />
+                {contactMessage ? (
+                  <p
+                    className={`text-sm ${contactStatus === 'success' ? 'text-green-700' : contactStatus === 'error' ? 'text-red-600' : 'text-black/70'}`}
+                  >
+                    {contactMessage}
+                  </p>
+                ) : null}
+              </div>
               <div className='hidden md:flex items-center justify-center lg:justify-end gap-6'>
                 {SOCIALS.map(({ name, href, Icon, action, copyValue }) => (
                   <div className="relative" key={name}>
