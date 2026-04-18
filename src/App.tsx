@@ -191,7 +191,7 @@ export default function PortfolioPage() {
   return (
     <main className="overflow-x-hidden bg-white text-black">
       <nav className="border-b border-black/5 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-295 items-center justify-between px-5 py-3 sm:px-8 lg:px-10">
+        <div className="mx-auto flex w-full items-center justify-between px-5 py-3 sm:px-8 lg:px-10">
           <a
             href="/"
             className="flex items-center gap-3 text-[1.05rem] font-semibold tracking-[-0.03em]"
