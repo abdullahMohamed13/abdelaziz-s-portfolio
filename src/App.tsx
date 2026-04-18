@@ -199,7 +199,7 @@ export default function PortfolioPage() {
             <img src="/black-logo.png" alt="Logo" className="object-contain h-12 w-12" />
           </a>
 
-          <div className="hidden items-center gap-16 text-[1.2rem] font-bold lg:flex">
+          <div className="hidden items-center gap-12 text-[1.2rem] font-bold lg:flex">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.label}
@@ -212,7 +212,7 @@ export default function PortfolioPage() {
           </div>
 
           <div className="hidden items-center gap-3 lg:flex">
-              <Button className='' variant='link' href="/Abdelaziz_Omar_Resume.pdf" target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)} children={(
+              <Button variant='link' href="/Abdelaziz_Omar_Resume.pdf" target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)} children={(
                 <div className='text-md flex items-center gap-2'>
                   <span>Resume</span>
                   <GrDownload className="h-3.5 w-3.5" />
