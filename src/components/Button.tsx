@@ -25,7 +25,7 @@ export default function Button({
     disabled = false,
 }: ButtonProps) {
 
-    const style = 'cursor-pointer inline-flex w-full h-12 items-center justify-center rounded-md bg-black px-6 text-[1rem] font-semibold text-white transition-colors duration-200 hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-70'
+    const style = 'cursor-pointer inline-flex w-full py-2 items-center justify-center rounded-md bg-black px-6 text-[1rem] font-semibold text-white transition-colors duration-200 hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-70'
     return <>
         {variant === 'link' ? (
             <a
